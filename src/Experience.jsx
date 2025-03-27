@@ -5,7 +5,7 @@ import { useRenderer } from './Render/Renderer';
 import DiscAnimation from './Animations/DiscAnimation';
 
 export default function Experience() {
-  const { scene, nodes } = useGLTF('./Assets/MyOffice(StickyNote).glb'); // Load the GLB file here
+  const { scene, nodes } = useGLTF('./assets/MyOffice(StickyNote).glb'); // Load the GLB file here
   useRenderer(scene); // Pass the scene to the renderer
 
   const {
@@ -18,7 +18,7 @@ export default function Experience() {
   } = useCameraLogic(scene);
 
   // Use the audio manager hook
-  const { isPlaying, setIsPlaying } = useAudioManager('./Assets/Window Ambient.mp3');
+  const { isPlaying, setIsPlaying } = useAudioManager('./assets/Window Ambient.mp3');
 
   return (
     <>
@@ -69,7 +69,7 @@ export default function Experience() {
       {/* GIFs */}
       <Html position={[-2.3, 0.5, 1.5]} transform>
         <img
-          src="./Assets/Click.gif"
+          src="./assets/Click.gif"
           alt="Instructional GIF"
           style={{ width: '20px', height: 'auto' }}
         />
@@ -77,7 +77,7 @@ export default function Experience() {
 
       <Html position={[-2.3, 0.15, 1.5]} transform>
         <img
-          src="./Assets/CurvedArrow.gif"
+          src="./assets/CurvedArrow.gif"
           alt="Instructional GIF"
           style={{ width: '20px', height: 'auto' }}
         />

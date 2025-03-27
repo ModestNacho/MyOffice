@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { useEffect } from 'react';
 
 export function useRenderer(scene) {
-  const texture = useTexture('./Assets/BakedTexture(StickyNote).jpg');
+  const texture = useTexture('./assets/BakedTexture(StickyNote).jpg');
   texture.flipY = false;
   texture.colorSpace = THREE.SRGBColorSpace;
 
