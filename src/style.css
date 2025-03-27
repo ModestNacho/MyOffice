@@ -1,0 +1,115 @@
+/* General styles for the loading screen */
+.loading-screen {
+  background-color: black;
+  color: green;
+  font-family: 'Courier New', monospace;
+  text-align: center;
+  height: 100vh; /* Ensures full viewport height */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Distributes content with space */
+  align-items: center;
+  overflow: hidden; /* Prevents scrollbars */
+  padding: 0; /* Removes extra padding */
+  margin: 0; /* Removes any default margin */
+}
+
+/* Styles for the boot message */
+.boot-message {
+  color: rgb(0, 200, 0);
+  font-family: 'Courier New', monospace;
+  text-align: left;
+  position: absolute; /* Position it relative to the screen */
+  left: 20px; /* Distance from the left edge */
+  top: 50%; /* Position it in the vertical middle */
+  transform: translateY(-50%); /* Center it vertically */
+  white-space: pre-wrap; /* Keeps line breaks */
+}
+
+/* Styles for the loading text */
+.loading-text {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-family: 'Monaco', monospace;
+  font-size: 20px;
+  color: rgb(0, 200, 0);
+  text-align: left;
+}
+
+/* Styles for the ASCII spinner */
+.ascii-spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.ascii-spinner {
+  font-family: 'Monaco', monospace;
+  font-size: 10px;
+  color: rgb(0, 200, 0);
+  text-align: center;
+}
+
+/* Styles for the loading bar */
+.loading-bar {
+  font-family: 'Monaco', monospace;
+  font-size: 14px;
+  color: rgb(0, 200, 0);
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* Styles for the "Press Enter" text */
+.press-enter-text {
+  margin-top: 20px;
+}
+
+/* Blinking cursor effect */
+.blinking-cursor {
+  animation: blink 1s steps(2, start) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Your other styles from the previous code */
+html, body, #root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgb(0, 0, 0);
+}
+
+.r3f {
+  touch-action: none;
+}
+
+.operatingSystem iframe {
+  width: 1920px;
+  height: 1080px;
+  border: none;
+  border-radius: 15px;
+  background: #000000;
+}
+
+.start-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.start-button:hover {
+  background: #0056b3;
+}
