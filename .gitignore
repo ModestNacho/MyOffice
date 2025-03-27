@@ -1,0 +1,17 @@
+# Node modules
+node_modules/
+
+# Build output
+dist/
+
+# System files
+.DS_Store
+
+# Cache files
+.cache
+
+# Logs
+*.log
+
+# ESLint cache
+.eslintcache
