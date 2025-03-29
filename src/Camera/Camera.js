@@ -37,20 +37,17 @@ export function useCameraLogic(scene) {
     };
   }, [camera, scene]);
 
-  useFrame(() => {
+  useFrame((state, delta) => {
     let targetPosition = defaultPosition;
-
+ 
     if (isDeskView) {
-      if (isZoomedIn) {
-        targetPosition = zoomedInPosition;
-      } else {
-        targetPosition = deskPosition;
-      }
+      targetPosition = isZoomedIn ? zoomedInPosition : deskPosition;
     } else if (isHovered) {
       targetPosition = zoomedInPosition;
     }
 
-    camera.position.lerp(targetPosition, 0.03);
+    const speed = 3; // Adjust this number to control transition speed
+    camera.position.lerp(targetPosition, 1 - Math.exp(-speed * delta));
 
     if (isHovered || isDeskView) {
       const monitorGlass = scene.getObjectByName('Monitor_Glass_right');
@@ -63,7 +60,7 @@ export function useCameraLogic(scene) {
       targetLookAt.current.copy(scene.position);
     }
 
-    currentLookAt.current.lerp(targetLookAt.current, 0.03);
+    currentLookAt.current.lerp(targetLookAt.current, 1 - Math.exp(-speed * delta));
     camera.lookAt(currentLookAt.current);
   });
 

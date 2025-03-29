@@ -19,7 +19,6 @@ const App = () => {
       ) : (
         <Canvas
           className="r3f"
-          shadows
           camera={{
             fov: 40,
             near: 0.1,
