@@ -22,7 +22,7 @@ export default function Experience() {
 
   return (
     <>
-      <ambientLight intensity={8.1} />
+      <ambientLight intensity={8.1} /> // maybe add a different texture for night time after fetching time of day from user
       <color args={['#241a1a']} attach="background" />
       
       {/* Pass the scene and isPlaying state to the DiscAnimation component */}
@@ -49,7 +49,8 @@ export default function Experience() {
           occlude="blending"
         >
           <iframe
-            src="https://modestnacho.github.io/operating-system/"
+            // src="https://modestnacho.github.io/operating-system/"
+            src="http://localhost:3000/operating-system/"
             onMouseEnter={() => {
               setIsHovered(true);
               if (isDeskView) {
@@ -89,12 +90,12 @@ export default function Experience() {
         speed={0.3}
         opacity={0.3}
         color={'white'}
-        size={2}
+        size={3}
         scale={[3, 2, -2]}
         noise={1}
         position={[0.7, 0, -0.5]}
       />
-      <Stats />
+      <Stats /> 
     </>
   );
 }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './style.css';
+import { useProgress } from '@react-three/drei';
 //poopoo
 const frames = [
   `
@@ -316,14 +317,21 @@ const frames = [
 
 const bootMessages = [
   "  Initializing system components...",
-  "  Loading drivers...",
-  "  Starting services...",
+  "  Loading core drivers...",
+  "  Mounting /dev/sda1...",
+  "  Starting X11 window manager...",
+  "  [ OK ] Network service initialized.",
+  "  [ERROR] Bluetooth adapter not found. Retrying...",
+  "  [ OK ] Bluetooth fallback driver loaded.",
+  "  Syncing system time with NTP...",
+  "  Applying user configurations...",
   "  Verifying system integrity...",
-  "  Loading user settings...",
+  "  [ OK ] System integrity verified.",
+  "  Launching graphical interface...",
 ];
 
 const LoadingScreen = ({ onFinish }) => {
-  const [progress, setProgress] = useState(0);
+  const { progress } = useProgress();
   const [loadingFinished, setLoadingFinished] = useState(false);
   const [frame, setFrame] = useState(0);
   const [showPrompt, setShowPrompt] = useState(false);
@@ -345,7 +353,7 @@ const LoadingScreen = ({ onFinish }) => {
         } else {
           clearInterval(typingInterval);
           setTimeout(() => {
-            setCurrentMessage((prev) => prev + " - reset back to Default! \n"); // Append "OK" at the end of the full message
+            setCurrentMessage((prev) => prev + "\n");
             setMessageIndex((prev) => prev + 1);
           }, 500); // Delay before next message
         }
@@ -355,30 +363,19 @@ const LoadingScreen = ({ onFinish }) => {
     }
   }, [messageIndex]);
 
+  // Removed fake progress simulation useEffect
+
   useEffect(() => {
-    const totalCharacters = bootMessages.reduce((sum, msg) => sum + msg.length, 0);
-    const totalBootTime = totalCharacters * 50 + bootMessages.length * 500; // Typing + message delay
-  
-    const progressInterval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev < 100) {
-          return prev + 100 / (totalBootTime / 30); // Scale progress over totalBootTime
-        } else {
-          clearInterval(progressInterval);
-          setLoadingFinished(true);
-          setTimeout(() => setShowPrompt(true), 1000);
-          return 100;
-        }
-      });
-    }, 30);
-  
-    return () => clearInterval(progressInterval);
-  }, []);
+    if (progress >= 100) {
+      setLoadingFinished(true);
+      setTimeout(() => setShowPrompt(true), 1000);
+    }
+  }, [progress]);
 
   useEffect(() => {
     const frameInterval = setInterval(() => {
       setFrame((prev) => (prev + 1) % frames.length); // Loop through ASCII frames
-    }, 150); // Adjust speed as needed
+    }, 190); // Adjust speed as needed
   
     return () => clearInterval(frameInterval);
   }, []);
@@ -387,21 +384,8 @@ const LoadingScreen = ({ onFinish }) => {
     const barLength = 30;
     const filledLength = Math.round((progress / 100) * barLength);
     const emptyLength = barLength - filledLength;
-    return `[${'='.repeat(filledLength)}${' '.repeat(emptyLength)}] ${Math.round(progress)}%`;  };
-
-  useEffect(() => {
-    const handleKeyPress = (event) => {
-      if (loadingFinished && event.key === 'Enter') {
-        onFinish();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyPress);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyPress);
-    };
-  }, [loadingFinished, onFinish]);
+    return `[${'='.repeat(filledLength)}${' '.repeat(emptyLength)}] ${Math.round(progress)}%`;
+  };
 
   return (
     <div className="loading-screen">
@@ -424,15 +408,22 @@ const LoadingScreen = ({ onFinish }) => {
         <pre className="ascii-spinner">{frames[frame]}</pre>
       </div>
 
-      {/* Loading Bar */}
-      <pre className="loading-bar">{renderLoadingBar()}</pre>
-
-      {/* "Press Enter" Prompt */}
-      {loadingFinished && showPrompt && (
-        <pre className="press-enter-text">
-          Press Enter to continue... <span className="blinking-cursor">_</span>
-        </pre>
-      )}
+      <div style={{
+        position: 'absolute',
+        bottom: '40px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        textAlign: 'center'
+      }}>
+        <pre className="loading-bar">{renderLoadingBar()}</pre>
+        {loadingFinished && showPrompt && (
+          <div style={{ marginTop: '20px' }}>
+            <button className="start-button retro" onClick={onFinish}>
+              Start System
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
