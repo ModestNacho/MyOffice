@@ -1,6 +1,6 @@
 import '../style.css';
 import { useState } from 'react';
-import settingsIcon from '/MyOffice/assets/Settings.svg';
+import settingsIcon from '/assets/Settings.svg';
 
 export default function QualitySettingsPanel() {
   const [isOpen, setIsOpen] = useState(false);
