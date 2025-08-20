@@ -20,14 +20,20 @@ export function useCameraLogic(scene) {
   useEffect(() => {
     camera.position.copy(defaultPosition);
     camera.lookAt(scene.position);
-    currentLookAt.current.copy(scene.position); // Initialize the current look-at position
+    currentLookAt.current.copy(scene.position);
 
     const handleSceneClick = (event) => {
+      // Check if the click occurred within the quality panel
+      const qualityPanel = document.querySelector('.quality-panel-container');
+      if (qualityPanel && qualityPanel.contains(event.target)) {
+        return; // Exit early if click is within quality panel
+      }
+
       event.preventDefault();
       if (event.target.id === 'prevent-click') return;
 
       setIsDeskView((prev) => !prev);
-      setIsZoomedIn(false); // Ensure zoomed-in state is reset on click
+      setIsZoomedIn(false);
     };
 
     document.addEventListener('mousedown', handleSceneClick);

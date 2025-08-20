@@ -7,17 +7,23 @@ import Experience from './Experience.jsx';
 import LoadingScreen from './LoadingScreen.jsx';
 import QualitySettingsPanel from './Render/QualitySettingsPanel';
 
-// Currently using a fake loading screen rather than fetching what assests are currently laoding using three or drei
-// Will be removin 
+// Starting to load the 3D model and texture early to save time
+// This way the model starts downloading before Experience component even mounts
+// It's not loading twice, the useGLTF in Experience will use this pre-loaded model from cache
 
 useGLTF.preload('./assets/MyOffice(StickyNote).glb');
 useTexture.preload('./assets/BakedTexture(StickyNote).jpg');
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [quality, setQuality] = useState('Balanced');
 
   const handleFinishLoading = () => {
     setIsLoading(false);
+  };
+
+  const handleQualityChange = (newQuality) => {
+    setQuality(newQuality);
   };
 
   return (
@@ -34,9 +40,12 @@ const App = () => {
               far: 2000,
             }}
           >
-            <Experience />
+            <Experience quality={quality} />
           </Canvas>
-          <QualitySettingsPanel />
+          <QualitySettingsPanel 
+            quality={quality}
+            onQualityChange={handleQualityChange}
+          />
         </>
       )}
     </>

@@ -2,37 +2,39 @@ import '../style.css';
 import { useState } from 'react';
 import settingsIcon from '/assets/Settings.svg';
 
-export default function QualitySettingsPanel() {
+export default function QualitySettingsPanel({ quality, onQualityChange }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState('Balanced');
   const options = ['Performance', 'Balanced', 'Ultra'];
+
+  const handleOptionClick = (option, e) => {
+    e.stopPropagation();
+    onQualityChange(option);
+  };
 
   return (
     <div
       className="quality-panel-container"
-      onPointerDown={(e) => e.stopPropagation()}
-      onPointerUp={(e) => e.stopPropagation()}
-      onPointerMove={(e) => e.stopPropagation()}
+      onClick={(e) => e.stopPropagation()} // Changed from onPointerDown to onClick
     >
       <button
         className="gear-button"
-        onClick={(e) => { e.stopPropagation(); setIsOpen(!isOpen); }}
-        onPointerDown={(e) => e.stopPropagation()}
-        onPointerUp={(e) => e.stopPropagation()}
-        onPointerMove={(e) => e.stopPropagation()}
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsOpen(!isOpen);
+        }}
       >
         <img src={settingsIcon} alt="Settings" className="gear-icon" />
       </button>
 
       {isOpen && (
-        <div className="quality-panel">
+        <div className="quality-panel" onClick={(e) => e.stopPropagation()}>
           <h3 className="quality-title">QUALITY OPTIONS</h3>
           <div className="quality-options">
             {options.map((option) => (
               <label
                 key={option}
-                className={`quality-option ${selected === option ? 'selected' : ''}`}
-                onClick={() => setSelected(option)}
+                className={`quality-option ${quality === option ? 'selected' : ''}`}
+                onClick={(e) => handleOptionClick(option, e)} // Use the new handler
               >
                 <span className="option-label">{option}</span>
                 <span className="radio-indicator" />

@@ -2,11 +2,15 @@ import { useGLTF, Html, Stats, Sparkles } from '@react-three/drei';
 import { useAudioManager } from './hooks/useAudioManager';
 import { useCameraLogic } from './Camera/Camera';
 import { useRenderer } from './Render/Renderer';
+import { useQualitySettings } from './hooks/useQualitySettings';
 import DiscAnimation from './Animations/DiscAnimation';
 
-export default function Experience() {
-  const { scene, nodes } = useGLTF('./assets/MyOffice(StickyNote).glb'); // Load the GLB file here
+export default function Experience({ quality = 'Balanced' }) {
+  // This will use the pre-loaded model from index.jsx instead of loading it again
+  // Pre-loading + using it here
+  const { scene, nodes } = useGLTF('./assets/MyOffice(StickyNote).glb');
   useRenderer(scene); // Pass the scene to the renderer
+  useQualitySettings(quality); // Apply quality settings
 
   const {
     isHovered,
