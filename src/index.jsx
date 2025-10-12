@@ -17,6 +17,7 @@ useTexture.preload('./assets/BakedTexture(StickyNote).jpg');
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [quality, setQuality] = useState('Balanced');
+  const [isInDefaultView, setIsInDefaultView] = useState(true);
 
   const handleFinishLoading = () => {
     setIsLoading(false);
@@ -24,6 +25,10 @@ const App = () => {
 
   const handleQualityChange = (newQuality) => {
     setQuality(newQuality);
+  };
+
+  const handleCameraStateChange = (inDefaultView) => {
+    setIsInDefaultView(inDefaultView);
   };
 
   return (
@@ -40,11 +45,15 @@ const App = () => {
               far: 2000,
             }}
           >
-            <Experience quality={quality} />
+            <Experience 
+              quality={quality} 
+              onCameraStateChange={handleCameraStateChange}
+            />
           </Canvas>
           <QualitySettingsPanel 
             quality={quality}
             onQualityChange={handleQualityChange}
+            isInDefaultView={isInDefaultView}
           />
         </>
       )}

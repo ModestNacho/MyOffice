@@ -1,3 +1,4 @@
+import React from 'react';
 import { useGLTF, Html, Stats, Sparkles } from '@react-three/drei';
 import { useAudioManager } from './hooks/useAudioManager';
 import { useCameraLogic } from './Camera/Camera';
@@ -5,7 +6,9 @@ import { useRenderer } from './Render/Renderer';
 import { useQualitySettings } from './hooks/useQualitySettings';
 import DiscAnimation from './Animations/DiscAnimation';
 
-export default function Experience({ quality = 'Balanced' }) {
+console.log("Welcome to CubeOS");
+
+export default function Experience({ quality = 'Balanced', onCameraStateChange }) {
   // This will use the pre-loaded model from index.jsx instead of loading it again
   // Pre-loading + using it here
   const { scene, nodes } = useGLTF('./assets/MyOffice(StickyNote).glb');
@@ -20,6 +23,12 @@ export default function Experience({ quality = 'Balanced' }) {
     isZoomedIn,
     setIsZoomedIn,
   } = useCameraLogic(scene);
+
+  // Notify parent component about camera state changes
+  React.useEffect(() => {
+    const isInDefaultView = !isDeskView && !isHovered;
+    onCameraStateChange?.(isInDefaultView);
+  }, [isDeskView, isHovered, onCameraStateChange]);
 
   // Use the audio manager hook
   const { isPlaying, setIsPlaying } = useAudioManager('./assets/Window Ambient.mp3');
@@ -473,4 +482,3 @@ export default function Experience({ quality = 'Balanced' }) {
 //     </>
 //   );
 // }
-

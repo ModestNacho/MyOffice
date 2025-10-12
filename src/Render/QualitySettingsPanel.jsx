@@ -2,7 +2,7 @@ import '../style.css';
 import { useState } from 'react';
 import settingsIcon from '/assets/Settings.svg';
 
-export default function QualitySettingsPanel({ quality, onQualityChange }) {
+export default function QualitySettingsPanel({ quality, onQualityChange, isInDefaultView }) {
   const [isOpen, setIsOpen] = useState(false);
   const options = ['Performance', 'Balanced', 'Ultra'];
 
@@ -13,7 +13,7 @@ export default function QualitySettingsPanel({ quality, onQualityChange }) {
 
   return (
     <div
-      className="quality-panel-container"
+      className={`quality-panel-container ${!isInDefaultView ? 'hidden' : ''}`}
       onClick={(e) => e.stopPropagation()} // Changed from onPointerDown to onClick
     >
       <button

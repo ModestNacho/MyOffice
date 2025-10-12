@@ -1,40 +1,122 @@
 /* General styles for the loading screen */
 .loading-screen {
-  background-color: black;
-  color: green;
-  font-family: 'Courier New', monospace;
-  text-align: center;
-  height: 100vh; /* Ensures full viewport height */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(180deg, #000408 0%, #001100 100%);
+  color: #00ff41;
+  font-family: 'Courier New', 'Monaco', monospace;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Distributes content with space */
+  justify-content: flex-start;
   align-items: center;
-  overflow: hidden; /* Prevents scrollbars */
-  padding: 0; /* Removes extra padding */
-  margin: 0; /* Removes any default margin */
+  z-index: 10000;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  
+  /* CRT monitor effect */
+  background-image: 
+    linear-gradient(90deg, transparent 50%, rgba(0, 255, 65, 0.03) 50%),
+    linear-gradient(rgba(0, 255, 65, 0.02) 50%, transparent 50%);
+  background-size: 4px 4px, 2px 2px;
+  
+  /* Subtle screen glow */
+  box-shadow: inset 0 0 100px rgba(0, 255, 65, 0.1);
+}
+
+.terminal-output {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  max-height: 60vh;
+  overflow-y: auto;
+  transition: opacity 1s ease-out;
+}
+
+.terminal-output.fade-out {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.ascii-content-container {
+  position: absolute;
+  top: 300px;
+  right: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+}
+
+/* CUBEOS Logo - responsive, top right */
+.cubeos-logo {
+  position: absolute;    /* Positioned relative to nearest positioned parent */
+  top: 2vh;             /* 2% of viewport height from top - adjust for vertical position */
+  right: 2vw;           /* 2% of viewport width from right - adjust for horizontal position */
+  z-index: 10;          /* Stacking order */
+}
+
+.cubeos-text {
+  font-size: clamp(12px, 2.5vw, 20px);        /* Responsive: min 12px, scales 2.5% of viewport width, max 20px */
+  text-align: center;                          /* Centers the ASCII art text */
+  margin: 0;                                   /* Removes default margins */
+  text-shadow: 0 0 15px rgba(0, 255, 65, 0.9); /* Green glow: horizontal, vertical, blur, color */
+  font-weight: bold;                           /* Makes text thicker/bolder */
+  color: #00ff41;                              /* Text color */
+  font-family: 'Monaco', monospace;            /* Font family for consistent character spacing */
+}
+
+/* ASCII Spinner - perfectly centered */
+.ascii-spinner-wrapper {
+  position: fixed;           /* Fixed positioning relative to viewport */
+  top: 50%;                 /* Start from middle of screen vertically */
+  left: 50%;                /* Start from middle of screen horizontally */
+  transform: translate(-50%, -50%); /* Shift back by half its size for true centering */
+  z-index: 10;              /* Stacking order - higher = on top */
+  pointer-events: none;     /* Prevents blocking clicks on other elements */
+  
+  /* Remove flexbox that was causing stretching */
+  display: block;           /* Simple block display */
+  width: auto;              /* Let content determine size */
+  height: auto;             /* Let content determine size */
 }
 
 /* Styles for the boot message */
 .boot-message {
-  color: rgb(0, 200, 0);
+  font-size: 14px;
+  line-height: 1.2;
+  margin: 0;
+  white-space: pre-wrap;
+  text-shadow: 0 0 5px rgba(0, 255, 65, 0.7);
+  color: #00ff41;
   font-family: 'Courier New', monospace;
   text-align: left;
-  position: absolute; /* Position it relative to the screen */
-  left: 20px; /* Distance from the left edge */
-  top: 50%; /* Position it in the vertical middle */
-  transform: translateY(-50%); /* Center it vertically */
-  white-space: pre-wrap; /* Keeps line breaks */
+}
+
+.cursor {
+  animation: blink 1.06s infinite;
+  background-color: #00ff41;
+  color: #000;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
 }
 
 /* Styles for the loading text */
 .loading-text {
-  position: absolute;
-  top: 10px;
-  left: 10px;
+  font-size: 12px;
+  text-align: center;
+  margin: 10px 0;
+  text-shadow: 0 0 10px rgba(0, 255, 65, 0.8);
+  font-weight: bold;
+  color: #00ff41;
   font-family: 'Monaco', monospace;
-  font-size: 20px;
-  color: rgb(0, 200, 0);
-  text-align: left;
 }
 
 /* Styles for the ASCII spinner */
@@ -42,39 +124,63 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  margin: 10px 0;
 }
 
 .ascii-spinner {
   font-family: 'Monaco', monospace;
-  font-size: 10px;
-  color: rgb(0, 200, 0);
-  text-align: center;
+  font-size: clamp(9px, 0.8vw, 8px);     /* SMALLER size to prevent stretching */
+  line-height: 1.2;                      /* Tighter line spacing to maintain ASCII art proportions */
+  text-align: left;                      /* LEFT align to prevent centering conflicts */
+  max-width: none;                       /* Remove width constraint that was stretching */
+  width: auto;                           /* Let content determine width naturally */
+  text-shadow: 0 0 12px rgba(0, 255, 65, 0.7); /* Normal glow effect */
+  color: #00ff41;                         
+  white-space: pre;                      /* Preserves exact spacing */
+  letter-spacing: -0.5px;                /* NEGATIVE spacing to tighten characters */
+  word-spacing: 0;                       
+  font-weight: normal;                   
+  margin: 0;                             
+  padding: 0;                            
+  display: block;                        
+  
+  /* Additional fixes for centering and stretching */
+  font-variant-numeric: tabular-nums;    /* Ensures consistent number width */
+  text-rendering: geometricPrecision;    /* Better character spacing */
+  -webkit-font-smoothing: none;          /* Prevents anti-aliasing that can blur ASCII */
 }
 
 /* Styles for the loading bar */
 .loading-bar {
   font-family: 'Monaco', monospace;
-  font-size: 14px;
-  color: rgb(0, 200, 0);
+  font-size: 16px;
+  color: #00ff41;
+  text-shadow: 0 0 5px rgba(0, 255, 65, 0.7);
+  font-weight: bold;
   text-align: center;
   margin-top: 10px;
 }
 
-/* Styles for the "Press Enter" text */
-.press-enter-text {
-  margin-top: 20px;
+/* Retro-themed green button style */
+.start-button.retro {
+  background-color: #000408;
+  border: 2px solid #00ff41;
+  color: #00ff41;
+  font-family: 'Courier New', monospace;
+  font-size: 16px;
+  padding: 12px 24px;
+  cursor: pointer;
+  text-transform: lowercase;
+  box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
+  transition: all 0.3s ease;
+  text-shadow: 0 0 5px rgba(0, 255, 65, 0.7);
 }
 
-/* Blinking cursor effect */
-.blinking-cursor {
-  animation: blink 1s steps(2, start) infinite;
-}
-
-@keyframes blink {
-  50% {
-    opacity: 0;
-  }
+.start-button.retro:hover {
+  background-color: #00ff41;
+  color: #000408;
+  box-shadow: 0 0 25px rgba(0, 255, 65, 0.8);
+  text-shadow: none;
 }
 
 /* Your other styles from the previous code */
@@ -121,6 +227,15 @@ html, body, #root {
   z-index: 9999;
   font-family: sans-serif;
   pointer-events: auto;
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.quality-panel-container.hidden {
+  transform: translateY(100px);
+  opacity: 0;
+  pointer-events: none;
 }
 
 .gear-button {
@@ -140,7 +255,7 @@ html, body, #root {
   background-color: rgba(20, 20, 20, 0.95);
   padding: 20px;
   width: 280px;
-  border-radius: 12px;
+  border-radius: 30px;
   color: white;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
 }
